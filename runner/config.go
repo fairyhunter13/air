@@ -23,14 +23,27 @@ const (
 
 // Config is the main configuration structure for Air.
 type Config struct {
-	Root        string    `toml:"root"`
-	TmpDir      string    `toml:"tmp_dir"`
-	TestDataDir string    `toml:"testdata_dir"`
-	Build       cfgBuild  `toml:"build"`
-	Color       cfgColor  `toml:"color"`
-	Log         cfgLog    `toml:"log"`
-	Misc        cfgMisc   `toml:"misc"`
-	Screen      cfgScreen `toml:"screen"`
+	Root        string        `toml:"root"`
+	TmpDir      string        `toml:"tmp_dir"`
+	TestDataDir string        `toml:"testdata_dir"`
+	Polling     time.Duration `toml:"polling"`
+	Build       cfgBuild      `toml:"build"`
+	Color       cfgColor      `toml:"color"`
+	Log         cfgLog        `toml:"log"`
+	Misc        cfgMisc       `toml:"misc"`
+	Screen      cfgScreen     `toml:"screen"`
+}
+
+// DefaultPolling is 3 seconds for file changes.
+const DefaultPolling = 3 * time.Second
+
+// GetPolling is the polling interval for file changes.
+func (c *Config) GetPolling() time.Duration {
+	if c.Polling < DefaultPolling {
+		return DefaultPolling
+	}
+
+	return c.Polling
 }
 
 type cfgBuild struct {
@@ -184,7 +197,7 @@ func defaultConfig() Config {
 		ExcludeFile:  []string{},
 		ExcludeDir:   []string{"assets", "tmp", "vendor", "testdata"},
 		ArgsBin:      []string{},
-		ExcludeRegex: []string{"_test.go"},
+		ExcludeRegex: []string{"_test\\.go"},
 		Delay:        1000,
 		StopOnError:  true,
 	}
@@ -208,6 +221,7 @@ func defaultConfig() Config {
 		Root:        ".",
 		TmpDir:      "tmp",
 		TestDataDir: "testdata",
+		Polling:     DefaultPolling,
 		Build:       build,
 		Color:       color,
 		Log:         log,

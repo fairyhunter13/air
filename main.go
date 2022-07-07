@@ -8,7 +8,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/cosmtrek/air/runner"
+	"github.com/fairyhunter13/air/runner"
 )
 
 var (

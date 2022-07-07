@@ -490,12 +490,13 @@ func initWithBuildFailedCode(t *testing.T) string {
 
 func generateBuildErrorGoCode(dir string) error {
 	code := `package main
-// You can edit this code!
+
+import "fmt"
+/ You can edit this code!
 // Click here and start typing.
 
 func main() {
-	Println("Hello, 世界")
-
+	fmt.Println("Hello, 世界")
 }
 `
 	file, err := os.Create(dir + "/main.go")

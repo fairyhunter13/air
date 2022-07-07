@@ -1,4 +1,4 @@
-# Air [![Go](https://github.com/cosmtrek/air/workflows/Go/badge.svg)](https://github.com/cosmtrek/air/actions?query=workflow%3AGo+branch%3Amaster) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/dcb95264cc504cad9c2a3d8b0795a7f8)](https://www.codacy.com/gh/cosmtrek/air/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=cosmtrek/air&amp;utm_campaign=Badge_Grade) [![Go Report Card](https://goreportcard.com/badge/github.com/cosmtrek/air)](https://goreportcard.com/report/github.com/cosmtrek/air) [![codecov](https://codecov.io/gh/cosmtrek/air/branch/master/graph/badge.svg)](https://codecov.io/gh/cosmtrek/air)
+# Air [![Go](https://github.com/fairyhunter13/air/workflows/Go/badge.svg)](https://github.com/fairyhunter13/air/actions?query=workflow%3AGo+branch%3Amaster) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/dcb95264cc504cad9c2a3d8b0795a7f8)](https://www.codacy.com/gh/fairyhunter13/air/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fairyhunter13/air&amp;utm_campaign=Badge_Grade) [![Go Report Card](https://goreportcard.com/badge/github.com/fairyhunter13/air)](https://goreportcard.com/report/github.com/fairyhunter13/air) [![codecov](https://codecov.io/gh/fairyhunter13/air/branch/master/graph/badge.svg)](https://codecov.io/gh/fairyhunter13/air)
 
 :cloud: 热重载 Go 应用的工具
 
@@ -40,10 +40,10 @@ Air 是为 Go 应用开发设计的另外一个热重载的命令行工具。只
 
 ```bash
 # binary 文件会是在 $(go env GOPATH)/bin/air
-curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s -- -b $(go env GOPATH)/bin
+curl -sSfL https://raw.githubusercontent.com/fairyhunter13/air/master/install.sh | sh -s -- -b $(go env GOPATH)/bin
 
 # 或者把它安装在 ./bin/ 路径下
-curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s
+curl -sSfL https://raw.githubusercontent.com/fairyhunter13/air/master/install.sh | sh -s
 
 air -v
 ```
@@ -55,12 +55,12 @@ P.S. 非常感谢 mattn 的 [PR](https://github.com/cosmtrek/air/pull/1)，使�
 使用 Go 的版本为 1.16 或更高:
 
 ```bash
-go install github.com/cosmtrek/air@latest
+go install github.com/fairyhunter13/air@latest
 ```
 
 ### Docker
 
-请拉取这个 Docker 镜像 [cosmtrek/air](https://hub.docker.com/r/cosmtrek/air).
+请拉取这个 Docker 镜像 [fairyhunter13/air](https://hub.docker.com/r/fairyhunter13/air).
 
 ```bash
 docker run -it --rm \
@@ -68,7 +68,7 @@ docker run -it --rm \
     -e "air_wd=<PROJECT>" \
     -v $(pwd):<PROJECT> \
     -p <PORT>:<APP SERVER PORT> \
-    cosmtrek/air
+    fairyhunter13/air
     -c <CONF>
 ```
 
@@ -79,7 +79,7 @@ docker run -it --rm \
     -w "/go/src/github.com/cosmtrek/hub" \
     -v $(pwd):/go/src/github.com/cosmtrek/hub \
     -p 9090:9090 \
-    cosmtrek/air
+    fairyhunter13/air
 ```
 
 ## 使用方法
@@ -140,7 +140,7 @@ air -c .air.toml -- -h
 ```
 services:
   my-project-with-air:
-    image: cosmtrek/air
+    image: fairyhunter13/air
     # working_dir value has to be the same of mapped volume
     working_dir: /project-package
     ports:

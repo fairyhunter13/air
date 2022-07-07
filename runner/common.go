@@ -1,6 +1,6 @@
 package runner
 
 const (
-	//PlatformWindows const for windows
+	// PlatformWindows const for windows
 	PlatformWindows = "windows"
 )

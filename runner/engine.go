@@ -10,14 +10,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fsnotify/fsnotify"
+	"github.com/gohugoio/hugo/watcher/filenotify"
 )
 
 // Engine ...
 type Engine struct {
 	config    *Config
 	logger    *logger
-	watcher   *fsnotify.Watcher
+	watcher   filenotify.FileWatcher
 	debugMode bool
 	runArgs   []string
 	running   bool
@@ -39,8 +39,16 @@ type Engine struct {
 
 // NewEngineWithConfig ...
 func NewEngineWithConfig(cfg *Config, debugMode bool) (*Engine, error) {
-	logger := newLogger(cfg)
-	watcher, err := fsnotify.NewWatcher()
+	var (
+		logger  = newLogger(cfg)
+		watcher filenotify.FileWatcher
+		err     error
+	)
+	if cfg != nil && cfg.Polling.Enabled {
+		watcher = filenotify.NewPollingWatcher(cfg.GetPollingInterval())
+	} else {
+		watcher, err = filenotify.NewEventWatcher()
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -232,7 +240,7 @@ func (e *Engine) watchDir(path string) error {
 			select {
 			case <-e.watcherStopCh:
 				return
-			case ev := <-e.watcher.Events:
+			case ev := <-e.watcher.Events():
 				e.mainDebug("event: %+v", ev)
 				if !validEvent(ev) {
 					break
@@ -253,7 +261,7 @@ func (e *Engine) watchDir(path string) error {
 				}
 				e.watcherDebug("%s has changed", e.config.rel(ev.Name))
 				e.eventCh <- ev.Name
-			case err := <-e.watcher.Errors:
+			case err := <-e.watcher.Errors():
 				e.watcherLog("error: %s", err.Error())
 			}
 		}
@@ -409,8 +417,8 @@ func (e *Engine) building() error {
 		return err
 	}
 	defer func() {
-		stdout.Close()
-		stderr.Close()
+		_ = stdout.Close()
+		_ = stderr.Close()
 	}()
 	_, _ = io.Copy(os.Stdout, stdout)
 	_, _ = io.Copy(os.Stderr, stderr)
@@ -450,8 +458,8 @@ func (e *Engine) runBin() error {
 		<-e.binStopCh
 		e.mainDebug("trying to kill pid %d, cmd %+v", cmd.Process.Pid, cmd.Args)
 		defer func() {
-			stdout.Close()
-			stderr.Close()
+			_ = stdout.Close()
+			_ = stderr.Close()
 		}()
 		pid, err := e.killCmd(cmd)
 		if err != nil {

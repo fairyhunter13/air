@@ -1,9 +1,13 @@
-# Config file for [Air](https://github.com/cosmtrek/air) in TOML format
+# Config file for [Air](https://github.com/fairyhunter13/air) in TOML format
 
 # Working directory
 # . or absolute path, please note that the directories following must be under root.
 root = "."
 tmp_dir = "tmp"
+
+[polling]
+enabled = false
+interval = "3s"
 
 [build]
 # Just plain old shell command. You could use `make` as well.

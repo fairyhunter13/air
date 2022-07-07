@@ -22,8 +22,8 @@ check:
 	@./hack/check.sh ${scope}
 
 .PHONY: ci
-ci: init
-	@$(GO) mod tidy && $(GO) mod vendor
+ci: init mod-tidy
+	@$(GO) mod vendor
 
 .PHONY: build
 build: check
@@ -42,8 +42,12 @@ release: check
 
 .PHONY: docker-image
 docker-image:
-	docker build -t cosmtrek/air:$(AIRVER) -f ./Dockerfile .
+	docker build -t fairyhunter13/air:$(AIRVER) -f ./Dockerfile .
 
 .PHONY: push-docker-image
 push-docker-image:
-	docker push cosmtrek/air:$(AIRVER)
+	docker push fairyhunter13/air:$(AIRVER)
+
+.PHONY: mod-tidy
+mod-tidy:
+	$(GO) mod tidy -v -compat=1.17
